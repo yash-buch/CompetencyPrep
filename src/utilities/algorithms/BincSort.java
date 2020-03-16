@@ -90,7 +90,7 @@ public class BincSort {
 
 
     public static void main(String[] args) {
-        int[] ar = new int[]{2,4,5,6,3,7,8,5,6,9,4,3,5,6,7,1,8,5,23,56,87,9,34,234};
+        int[] ar = new int[]{4,3,2,1};
         BincSort bs = new BincSort();
         bs.sort(ar);
         bs.printArray(ar);

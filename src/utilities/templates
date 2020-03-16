@@ -13,3 +13,9 @@ private void printArray(int[] arr) {
 }
 
 --------------------------------------
+private void printList(ListNode node) {
+        while(node != null) {
+            System.out.print(node.val + " ");
+            node = node.next;
+        }
+    }
