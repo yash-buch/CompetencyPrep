@@ -2,41 +2,76 @@
 package problems.leetcode;
 
 import utilities.algorithms.BincKMP;
-import utilities.algorithms.BincPermutation;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class ProblemSWCOAW {
+
+
+    public static void main(String[] args) {
+        String s = "wordgoodgoodgoodbestword";
+        String[] words = new String[]{"word","good","best","word"};
+        ProblemSWCOAW obj = new ProblemSWCOAW();
+        List<Integer> list = obj.findSubstring("", new String[0]);
+        for(Integer in : list) {
+            System.out.println(in+"");
+        }
+    }
+
     public List<Integer> findSubstring(String s, String[] words) {
-        BincPermutation<Integer> bp = new BincPermutation<>();
-        Integer[] idxArr = new Integer[words.length];
-        for(int i = 0; i < words.length; i++) {
-            idxArr[i] = i;
-        }
-        List<Integer[]> permutations = bp.permute(idxArr);
-        List<String> strings = new ArrayList<>();
-        for(Integer[] intArr : permutations) {
-            StringBuffer sb = new StringBuffer();
-            for(Integer i : intArr) {
-                sb.append(words[i]);
-            }
-            strings.add(sb.toString());
-        }
-        BincKMP kmp = new BincKMP();
         List<Integer> result = new ArrayList<>();
-        Set<Integer> set = new HashSet<>();
-        for(String str : strings) {
-            List<Integer> list = kmp.matchPattern(s, str);
-            if(list.size() > 0) {
-                set.addAll(list);
+        if(s == null || s.length() == 0 || words == null || words.length == 0)
+            return result;
+        int wordSize = words[0].length();
+        List<Integer>[] wordMatches = new List[s.length()];
+        buildMaps(wordMatches, s, words);
+        for(int i = 0; i < wordMatches.length; i++) {
+            boolean shouldAdd = process(wordMatches, i, wordSize, words.length);
+            if (shouldAdd)
+                result.add(i);
+        }
+
+        return result;
+    }
+
+    private boolean process(List<Integer>[] wordMatches, int index, int wordSize, int numWords) {
+        if(wordMatches[index] == null)
+            return false;
+        final int USED = 1;
+        int[] usedWords = new int[numWords];
+        int matchedWordCount = 0;
+        int loopCount = 0;
+        for(int i = index; i < wordMatches.length && matchedWordCount < numWords; i += wordSize) {
+            loopCount++;
+            List<Integer> wordList = wordMatches[i];
+            if (wordList == null)
+                return false;
+            for(Integer a : wordList) {
+                if (usedWords[a] == USED) {
+                    continue;
+                }
+                usedWords[a] = USED;
+                matchedWordCount++;
+                break;
+            }
+            if (loopCount != matchedWordCount)
+                break;
+        }
+        return matchedWordCount == numWords;
+    }
+
+    private void buildMaps(List<Integer>[] wordMatches, String s, String[] words) {
+        BincKMP kmp = new BincKMP();
+        for(int i = 0; i < words.length; i++) {
+            String word = words[i];
+            List<Integer> wordOccurrences = kmp.matchPattern(s, word);
+            for(Integer occurrence : wordOccurrences) {
+                if(wordMatches[occurrence] == null) {
+                    wordMatches[occurrence] = new ArrayList<>();
+                }
+                wordMatches[occurrence].add(i);
             }
         }
-        for(Integer i : set) {
-            result.add(i);
-        }
-        return result;
     }
 }
