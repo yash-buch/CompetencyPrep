@@ -1,17 +1,17 @@
-package utilities.algorithms;
+package utilities.datastructures;
 
 import utilities.exceptions.HeapOverFlowException;
 
 import java.lang.reflect.Array;
 import java.util.Comparator;
 
-public class BincMinMaxHeap<T> {
+public class BincMinMaxHeap<T, K> {
     private Comparator comparator;
     private T[] heap;
     private int capacity;
     private int size;
 
-    public BincMinMaxHeap(Class<T> klass, Comparator<T> comparator, int capacity) {
+    public BincMinMaxHeap(Class<T> klass, Comparator<K> comparator, int capacity) {
         this.comparator = comparator;
         this.capacity = capacity;
         heap = (T[]) Array.newInstance(klass, capacity);

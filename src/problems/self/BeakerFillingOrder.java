@@ -1,7 +1,7 @@
 package problems.self;
 
 import org.junit.Test;
-import utilities.algorithms.BincMinMaxHeap;
+import utilities.datastructures.BincMinMaxHeap;
 import utilities.exceptions.HeapOverFlowException;
 
 import java.util.Comparator;
@@ -11,7 +11,7 @@ public class BeakerFillingOrder {
 
     public int[] getBeakerFillingOrder(Node root, int n) {
         Comparator comparator = new NodeComparator();
-        BincMinMaxHeap<Node> heap = new BincMinMaxHeap<>(Node.class, comparator, n);
+        BincMinMaxHeap<Node, Node> heap = new BincMinMaxHeap<>(Node.class, comparator, n);
         int[] result = new int[n];
         int index = 0;
         try {

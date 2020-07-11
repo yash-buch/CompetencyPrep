@@ -1,13 +1,13 @@
 package utilities.datastructures.tests;
 
 import org.junit.Test;
-import utilities.algorithms.BincMinMaxHeap;
+import utilities.datastructures.BincMinMaxHeap;
 import utilities.exceptions.HeapOverFlowException;
 
 public class BincMinMaxHeapTest {
     @Test
     public void test_insert() {
-        BincMinMaxHeap<Integer> heap = new BincMinMaxHeap<Integer>(Integer.class, Integer::compareTo, 2);
+        BincMinMaxHeap<Integer, Integer> heap = new BincMinMaxHeap<Integer, Integer>(Integer.class, Integer::compareTo, 2);
         try {
             assert (heap.size() == 0);
             heap.insert(3);
@@ -19,7 +19,7 @@ public class BincMinMaxHeapTest {
 
     @Test
     public void test_peek() {
-        BincMinMaxHeap<Integer> heap = new BincMinMaxHeap<Integer>(Integer.class, Integer::compareTo, 2);
+        BincMinMaxHeap<Integer, Integer> heap = new BincMinMaxHeap<Integer, Integer>(Integer.class, Integer::compareTo, 2);
         try {
             assert (heap.peek() == null);
             heap.insert(3);
@@ -31,7 +31,7 @@ public class BincMinMaxHeapTest {
 
     @Test
     public void test_remove() {
-        BincMinMaxHeap<Integer> heap = new BincMinMaxHeap<Integer>(Integer.class, Integer::compareTo, 2);
+        BincMinMaxHeap<Integer, Integer> heap = new BincMinMaxHeap<Integer, Integer>(Integer.class, Integer::compareTo, 2);
         try {
             assert (heap.size() == 0);
             heap.insert(3);
@@ -46,14 +46,14 @@ public class BincMinMaxHeapTest {
 
     @Test(expected = HeapOverFlowException.class)
     public void test_insertException() throws HeapOverFlowException {
-        BincMinMaxHeap<Integer> heap = new BincMinMaxHeap<Integer>(Integer.class, Integer::compareTo, 1);
+        BincMinMaxHeap<Integer, Integer> heap = new BincMinMaxHeap<Integer, Integer>(Integer.class, Integer::compareTo, 1);
             heap.insert(3);
             heap.insert(2);
     }
 
     @Test(expected = HeapOverFlowException.class)
     public void test_removeException() throws HeapOverFlowException {
-        BincMinMaxHeap<Integer> heap = new BincMinMaxHeap<Integer>(Integer.class, Integer::compareTo, 1);
+        BincMinMaxHeap<Integer, Integer> heap = new BincMinMaxHeap<Integer, Integer>(Integer.class, Integer::compareTo, 1);
         heap.remove();
     }
 }
