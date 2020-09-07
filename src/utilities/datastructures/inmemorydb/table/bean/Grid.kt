@@ -2,11 +2,21 @@ package utilities.datastructures.inmemorydb.table.bean
 
 class Grid private constructor(private val projection: Set<String>) {
     var gridMap: HashMap<String, HashMap<String, String>> = hashMapOf()
-    private var rows: MutableSet<String> = mutableSetOf()
+    private var rows: Set<String> = mutableSetOf()
     private val rowIterator: RowIterator = RowIterator()
 
-    fun setUp(): Grid {
-        rows = gridMap[projection.elementAt(0)]!!.keys
+    fun setUp(field: String?, order: ORDER?): Grid {
+        val map = when(order) {
+            ORDER.DSC -> {
+                gridMap[field ?: projection.elementAt(0)]!!.toList()
+                        .sortedBy { (_, value) -> value }.reversed().toMap()
+            }
+            else -> {
+                gridMap[field ?: projection.elementAt(0)]!!.toList()
+                        .sortedBy { (_, value) -> value }.toMap()
+            }
+        }
+        rows = map.keys
         return this
     }
 
@@ -40,13 +50,25 @@ class Grid private constructor(private val projection: Set<String>) {
 
     class Builder(projection: Set<String>) {
         private val grid = Grid(projection)
+        private var sortField: String? = null
+        private var sortOrder: ORDER? = null
+
         fun build(): Grid {
-            return grid.setUp()
+            return grid.setUp(sortField, sortOrder)
         }
 
         fun addColumnToGrid(name: String, map: HashMap<String, String>): Builder {
             grid.gridMap[name] = map
             return this
         }
+
+        fun sort(field: String, order: ORDER) {
+            sortField = field
+            sortOrder = order
+        }
+    }
+
+    enum class ORDER {
+        ASC, DSC
     }
 }
