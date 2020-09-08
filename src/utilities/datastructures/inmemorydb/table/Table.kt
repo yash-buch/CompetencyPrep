@@ -3,6 +3,7 @@ package utilities.datastructures.inmemorydb.table
 import utilities.datastructures.inmemorydb.table.bean.Grid
 import utilities.datastructures.inmemorydb.table.bean.Items
 import utilities.datastructures.inmemorydb.table.bean.QueryCmd
+import utilities.datastructures.inmemorydb.table.bean.UpdateItems
 
 class Table {
     lateinit var tableName: String
@@ -124,6 +125,28 @@ class Table {
         return formulateGrid(pkSet, queryCommand.projection)
     }
 
+    /**
+     * Deletes rows and returns the number of rows deleted
+     * @param pkSet : set of primary keys of the rows to be deleted
+     */
+    fun delete(pkSet: Set<String>): Int {
+        var count = 0
+        for (map in tableMap.values) {
+            count = map.removeFromKeys(pkSet)
+        }
+        return count
+    }
+
+    /**
+     * Updates the items of a row
+     * @param updateItems : values of the columns to be updated
+     */
+    fun update(updateItems: UpdateItems) {
+        val pKey = updateItems.primaryKey
+        val map = tableMap[pKey]
+        updateItems.getItems().forEach { map?.set(it.first, it.second) }
+    }
+
     private fun <K> formulateGrid(pkSet: Set<K>, projection: Set<String>? = null): Grid {
         val gridBuilder = Grid.Builder(projection?:setOfFieldNames)
         val columnList = setOfFieldNames.toList().filter { projection?.contains(it)?:true }
@@ -148,6 +171,18 @@ class Table {
             else -> mapOf()
         }
         return map.keys
+    }
+
+    /**
+     * Removes the <key, value> pairs for the given list of keys
+     */
+    private fun <K, V> HashMap<K, V>.removeFromKeys(pkSet: Set<K>): Int {
+        var count = 0
+        pkSet.forEach { count = when(this.remove(it)) {
+            null -> count + 0
+            else -> count + 1
+        } }
+        return count
     }
 
     /**

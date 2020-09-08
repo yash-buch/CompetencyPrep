@@ -1,6 +1,6 @@
 package utilities.datastructures.inmemorydb.table.bean
 
-class Items: Iterable<Pair<String, String>> {
+open class Items: Iterable<Pair<String, String>> {
     private var itemSet:HashSet<Pair<String, String>> = HashSet()
 
     fun addItem(column:String, value: String) {
