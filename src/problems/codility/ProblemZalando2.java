@@ -6,7 +6,7 @@ public class ProblemZalando2 {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
+        int n = -12645;
         int result = new ProblemZalando2().solution(n);
         System.out.print(result);
     }

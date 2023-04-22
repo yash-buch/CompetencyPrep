@@ -7,10 +7,10 @@ public class ProblemZalando3 {
 
     public static void main(String[] args) {
         //Scanner sc = new Scanner(System.in);
-        int[] n = new int[100000];
-        for(int i = 0; i < 100000; i++) {
-            n[i] = 0;
-        }
+        int[] n = new int[]{0,0,0};
+//        for(int i = 0; i < 100000; i++) {
+//            n[i] = 0;
+//        }
         //int[] n = new int[]{0,0,0};
         int result = new ProblemZalando3().solution(n);
         System.out.print(result);
@@ -39,28 +39,51 @@ public class ProblemZalando3 {
 //        return count;
 //    }
 
+//    public int solution(int[] A) {
+//        int count = 0;
+//        int sum = 0;
+//        Map<Integer, Integer> map = new HashMap();
+//        map.put(0, 0);
+//        for(int i = 0; i < A.length; i++) {
+//            sum += A[i];
+//            if(map.containsKey(sum)) {
+//                map.put(sum, map.get(sum) + 1);
+//            } else {
+//                map.put(sum, 0);
+//            }
+//        }
+//        for(Map.Entry<Integer, Integer> entry : map.entrySet()) {
+//            count += entry.getValue();
+//        }
+//        for(int i = 0; i < A.length; i++) {
+//            if(A[i] == 0) {
+//                count += 1;
+//            }
+//        }
+//        return count > 100000000 ? -1 : count;
+//    }
+
     public int solution(int[] A) {
-        int count = 0;
-        int sum = 0;
-        Map<Integer, Integer> map = new HashMap();
+        // write your code in Java SE 8
+        Map<Integer, Integer> map = new HashMap<>();
         map.put(0, 0);
-        for(int i = 0; i < A.length; i++) {
-            sum += A[i];
-            if(map.containsKey(sum)) {
-                map.put(sum, map.get(sum) + 1);
+        int sum = 0;
+        int result = 0;
+        for (int i = 0; i < A.length; i++) {
+            sum = sum + A[i];
+            if (map.containsKey(sum)) {
+                result += map.get(sum);
+                result++;
+                if (result > 1000000000) {
+                    return -1;
+                }
+                map.put(sum, map.get(sum)+1);
             } else {
                 map.put(sum, 0);
             }
         }
-        for(Map.Entry<Integer, Integer> entry : map.entrySet()) {
-            count += entry.getValue();
-        }
-        for(int i = 0; i < A.length; i++) {
-            if(A[i] == 0) {
-                count += 1;
-                if(count > 100000000) return -1;
-            }
-        }
-        return count;
+
+
+        return result;
     }
 }
