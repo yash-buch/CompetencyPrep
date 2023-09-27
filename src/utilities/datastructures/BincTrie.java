@@ -65,7 +65,15 @@ public class BincTrie {
         obj.insert("abcd");
         obj.insert("axyz");
         obj.queryPrefix("abc");
-        for(List<Character> list : obj.queryResult) {
+        obj.print();
+        obj.queryPrefix(("def"));
+        obj.print();
+        obj.queryPrefix(("abce"));
+        obj.print();
+    }
+
+    void print() {
+        for(List<Character> list : queryResult) {
             for (char c : list) {
                 System.out.print(c);
             }
